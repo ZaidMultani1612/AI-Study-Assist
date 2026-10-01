@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Study Assistant — Engineering Academic Platform</title>
+  <meta name="description" content="AI Study Assistant: Academic curriculum notes, local study assistant, rapid revision, and interactive evaluations.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Mobile Header Bar -->
+  <header class="mobile-header">
+    <button id="mobile-menu-toggle" class="icon-btn" aria-label="Toggle navigation">
+      <span class="hamburger-icon"></span>
+    </button>
+    <div class="brand">
+      <span class="brand-badge">AI</span>
+      <span class="brand-text">Study Assistant</span>
+    </div>
+    <div class="header-actions">
+      <button id="theme-toggle-mobile" class="theme-btn" aria-label="Toggle color theme">
+        <svg class="theme-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Sidebar Overlay for Mobile -->
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+  <!-- Main App Layout Wrapper -->
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-mark">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
+        </div>
+        <div class="brand-details">
+          <span class="brand-title">AI Study Assistant</span>
+          <span class="brand-tagline">Academic Workspace</span>
+        </div>
+      </div>
+
+      <!-- Quick Streak Badge in Sidebar -->
+      <div class="sidebar-streak-badge" id="sidebar-streak">
+        <div class="streak-icon-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </svg>
+        </div>
+        <div class="streak-info">
+          <span class="streak-label">STUDY STREAK</span>
+          <span class="streak-count" id="sidebar-streak-count">1 Day</span>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <button class="nav-item active" data-section="dashboard" id="nav-dashboard">
+              <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              </span>
+              <span class="nav-label">Dashboard</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-section="chat" id="nav-chat">
+              <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </span>
+              <span class="nav-label">AI Assistant</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-section="notes" id="nav-notes">
+              <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </span>
+              <span class="nav-label">Study Notes</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-section="revision" id="nav-revision">
+              <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </span>
+              <span class="nav-label">Quick Revision</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-section="quiz" id="nav-quiz">
+              <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </span>
+              <span class="nav-label">Quiz</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-section="short-answer" id="nav-short-answer">
+              <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+              </span>
+              <span class="nav-label">Short Answers</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-section="progress" id="nav-progress">
+              <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </span>
+              <span class="nav-label">Progress</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-section="settings" id="nav-settings">
+              <span class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </span>
+              <span class="nav-label">Settings</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Sidebar Footer with Theme Switcher -->
+      <div class="sidebar-footer">
+        <div class="theme-switch-container">
+          <span class="theme-mode-label" id="theme-label">Light Mode</span>
+          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle color theme">
+            <span class="theme-icon" id="theme-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="main-content">
+      
+      <!-- =================================================================== -->
+      <!-- 1. DASHBOARD SECTION -->
+      <!-- =================================================================== -->
+      <section id="section-dashboard" class="content-section active">
+        <!-- Minimal Welcome Banner -->
+        <div class="welcome-banner" id="welcome-banner">
+          <div class="banner-content">
+            <div class="banner-badge">Academic Curriculum</div>
+            <h2>AI Study Assistant</h2>
+            <p>A focused learning platform for engineering students. Comprehensive topic notes, local knowledge assistant, concise revision guides, and objective evaluations.</p>
+            <div class="banner-buttons">
+              <button class="btn btn-primary" id="banner-start-learning">Explore Curriculum</button>
+              <button class="btn btn-outline" id="banner-explore-subjects">View Subjects</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Header -->
+        <div class="dashboard-greeting-header">
+          <h1 id="greeting-text">Good morning, Student</h1>
+          <p class="greeting-subtitle">Select a subject below or enter a keyword to begin studying.</p>
+        </div>
+
+        <!-- Clean Search Bar -->
+        <div class="dashboard-search-card">
+          <div class="search-input-wrapper">
+            <span class="search-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input type="text" id="dashboard-search-input" placeholder="Search topic (e.g. Decision Tree, OSI Model, Normalization, TCP)...">
+            <button class="btn btn-primary" id="dashboard-search-btn">Search</button>
+          </div>
+          <div id="search-suggestions" class="search-suggestions-dropdown hidden"></div>
+        </div>
+
+        <!-- Dashboard Statistics Cards (Clean KPI Widgets) -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">TOPICS STUDIED</span>
+              <span class="stat-icon-subtle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </span>
+            </div>
+            <div class="stat-details">
+              <span class="stat-value" id="stat-topics-studied">0</span>
+              <span class="stat-subtext">Across 6 disciplines</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">QUIZZES COMPLETED</span>
+              <span class="stat-icon-subtle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </span>
+            </div>
+            <div class="stat-details">
+              <span class="stat-value" id="stat-quizzes-completed">0</span>
+              <span class="stat-subtext">Recorded evaluations</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">AVERAGE SCORE</span>
+              <span class="stat-icon-subtle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </span>
+            </div>
+            <div class="stat-details">
+              <span class="stat-value" id="stat-average-score">0%</span>
+              <span class="stat-subtext">Performance aggregate</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">STUDY STREAK</span>
+              <span class="stat-icon-subtle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+              </span>
+            </div>
+            <div class="stat-details">
+              <span class="stat-value" id="stat-study-streak">1 Day</span>
+              <span class="stat-subtext">Consecutive daily review</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommended For You (Dynamic) -->
+        <div class="dashboard-recommendations-wrapper" id="dashboard-recommendations-box">
+          <div class="section-title-row">
+            <div>
+              <h2>Recommended Review</h2>
+              <span class="section-subtitle">Targeted concepts based on your recent quiz activity</span>
+            </div>
+          </div>
+          <div class="recommendations-container" id="recommendations-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Core Academic Disciplines -->
+        <div class="subjects-section">
+          <div class="section-title-row">
+            <div>
+              <h2>Academic Disciplines</h2>
+              <span class="section-subtitle">Select a subject to access structured notes and topic breakdowns</span>
+            </div>
+          </div>
+          <div class="subject-cards-grid" id="dashboard-subject-cards">
+            <!-- Populated via script.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- 2. AI CHAT ASSISTANT SECTION -->
+      <!-- =================================================================== -->
+      <section id="section-chat" class="content-section">
+        <div class="chat-container">
+          <!-- Chat Header -->
+          <div class="chat-header">
+            <div class="chat-title-group">
+              <div class="chat-avatar-badge">AI</div>
+              <div>
+                <h2>AI Study Assistant</h2>
+                <p class="chat-subtitle">Local academic knowledge assistant</p>
+              </div>
+            </div>
+            <div class="chat-header-actions">
+              <div class="subject-select-wrapper">
+                <select id="chat-subject-filter" class="form-select-sm" aria-label="Subject context">
+                  <option value="all">All Subjects</option>
+                  <option value="python">Python</option>
+                  <option value="machine_learning">Machine Learning</option>
+                  <option value="artificial_intelligence">Artificial Intelligence</option>
+                  <option value="dbms">DBMS</option>
+                  <option value="data_science">Data Science</option>
+                  <option value="computer_networks">Computer Networks</option>
+                </select>
+              </div>
+              <button id="clear-chat-btn" class="btn btn-sm btn-outline" title="Clear Chat History">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <span>Clear Chat</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Suggested Questions Bar -->
+          <div class="suggested-questions-bar">
+            <span class="suggested-label">Suggested:</span>
+            <div class="suggested-chips" id="chat-suggested-chips">
+              <!-- Dynamically populated chips -->
+            </div>
+          </div>
+
+          <!-- Chat Messages Scroll Area -->
+          <div class="chat-messages-area" id="chat-messages">
+            <!-- Messages rendered by script.js -->
+          </div>
+
+          <!-- Chat Input Bar -->
+          <div class="chat-input-bar">
+            <form id="chat-form" class="chat-form" onsubmit="return false;">
+              <textarea 
+                id="chat-input" 
+                rows="1" 
+                placeholder="Ask about any topic (e.g. What is supervised learning? Explain Decision Tree...)" 
+                aria-label="Chat query"></textarea>
+              <button type="submit" id="chat-send-btn" class="btn btn-primary chat-send-btn" aria-label="Send query">
+                <span>Send</span>
+                <span class="send-icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- 3. STUDY NOTES SECTION -->
+      <!-- =================================================================== -->
+      <section id="section-notes" class="content-section">
+        <div class="notes-header-row">
+          <div>
+            <h1>Study Notes</h1>
+            <p class="section-subtitle">Curriculum syllabus, formal definitions, code examples, and exam points</p>
+          </div>
+          <div class="notes-search-wrapper">
+            <span class="search-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input type="text" id="notes-search-input" placeholder="Search topics (e.g. Decision Tree, Keys, OSI, Loops)...">
+          </div>
+        </div>
+
+        <!-- Subject Filter Pills -->
+        <div class="subject-filter-pills" id="notes-subject-filters">
+          <button class="filter-pill active" data-subject="all">All</button>
+          <button class="filter-pill" data-subject="python">Python</button>
+          <button class="filter-pill" data-subject="machine_learning">Machine Learning</button>
+          <button class="filter-pill" data-subject="artificial_intelligence">AI</button>
+          <button class="filter-pill" data-subject="dbms">DBMS</button>
+          <button class="filter-pill" data-subject="data_science">Data Science</button>
+          <button class="filter-pill" data-subject="computer_networks">Computer Networks</button>
+        </div>
+
+        <!-- Notes Split / Grid Layout -->
+        <div class="notes-layout" id="notes-layout">
+          <!-- Topic List Column -->
+          <div class="notes-topic-list-card">
+            <div class="list-header">
+              <span id="notes-count-label">Showing all topics</span>
+            </div>
+            <div class="notes-topic-items" id="notes-topic-items">
+              <!-- Dynamically populated list -->
+            </div>
+          </div>
+
+          <!-- Topic Detail View -->
+          <div class="notes-detail-card" id="notes-detail-card">
+            <div class="notes-empty-state" id="notes-empty-state">
+              <div class="empty-icon-wrap">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </div>
+              <h3>Select a topic to view study notes</h3>
+              <p>Choose from the list on the left or use the topic search bar above.</p>
+            </div>
+            
+            <article class="notes-content-article hidden" id="notes-content-article">
+              <div class="article-top-bar">
+                <span class="badge" id="article-subject-badge">Subject</span>
+                <div class="article-actions">
+                  <button class="btn btn-sm btn-primary" id="btn-note-start-quiz">Start Quiz</button>
+                  <button class="btn btn-sm btn-secondary" id="btn-note-quick-rev">Quick Revision</button>
+                  <button class="btn btn-sm btn-outline" id="btn-note-ask-assistant">Ask Assistant</button>
+                </div>
+              </div>
+
+              <h2 class="article-title" id="article-title">Topic Title</h2>
+
+              <div class="note-block">
+                <h3>Definition</h3>
+                <p id="article-definition" class="lead-text"></p>
+              </div>
+
+              <div class="note-block">
+                <h3>Key Concepts</h3>
+                <ul id="article-key-concepts" class="feature-bullets"></ul>
+              </div>
+
+              <div class="note-block">
+                <h3>Explanation</h3>
+                <div id="article-explanation" class="prose-text"></div>
+              </div>
+
+              <div class="note-block" id="article-example-block">
+                <h3>Example</h3>
+                <pre class="code-container"><code id="article-example"></code></pre>
+              </div>
+
+              <div class="note-block">
+                <h3>Applications</h3>
+                <ul id="article-applications" class="feature-bullets"></ul>
+              </div>
+
+              <div class="note-block highlight-block">
+                <h3>Exam Takeaways</h3>
+                <ul id="article-important-points" class="exam-bullets"></ul>
+              </div>
+
+              <div class="note-block summary-block">
+                <h3>Summary</h3>
+                <p id="article-summary"></p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- 4. QUICK REVISION MODE SECTION -->
+      <!-- =================================================================== -->
+      <section id="section-revision" class="content-section">
+        <div class="revision-header">
+          <div>
+            <h1>Quick Revision</h1>
+            <p class="section-subtitle">Concise exam-oriented notes structured for rapid recall</p>
+          </div>
+          <div class="revision-controls">
+            <select id="revision-subject-select" class="form-select">
+              <option value="python">Python</option>
+              <option value="machine_learning" selected>Machine Learning</option>
+              <option value="artificial_intelligence">Artificial Intelligence</option>
+              <option value="dbms">DBMS</option>
+              <option value="data_science">Data Science</option>
+              <option value="computer_networks">Computer Networks</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="revision-card-container">
+          <div class="revision-topic-selector-card">
+            <h3>Select Topic:</h3>
+            <div class="revision-topic-chips" id="revision-topic-chips">
+              <!-- Dynamically populated chips -->
+            </div>
+          </div>
+
+          <div class="revision-notes-sheet" id="revision-sheet">
+            <div class="sheet-header">
+              <div>
+                <h2 id="revision-sheet-title">Machine Learning – Quick Revision</h2>
+                <span class="sheet-badge" id="revision-sheet-badge">Summary</span>
+              </div>
+              <button class="btn btn-primary" id="revision-start-quiz-btn">Start Quiz</button>
+            </div>
+            <div class="sheet-body">
+              <ul class="revision-bullets" id="revision-bullet-list">
+                <!-- Bullets populated dynamically -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- 5. SHORT ANSWER GENERATOR SECTION -->
+      <!-- =================================================================== -->
+      <section id="section-short-answer" class="content-section">
+        <div class="short-answer-header">
+          <h1>Short Answer Generator</h1>
+          <p class="section-subtitle">Structured academic answers with definitions, examples, and exam takeaways</p>
+        </div>
+
+        <div class="short-answer-container">
+          <div class="short-answer-input-card">
+            <label for="short-answer-input">Enter question or query:</label>
+            <div class="input-row">
+              <input type="text" id="short-answer-input" placeholder="e.g. Explain supervised learning, What is Primary Key, Explain BFS...">
+              <button class="btn btn-primary" id="short-answer-generate-btn">Generate Answer</button>
+            </div>
+            <div class="sample-queries-row">
+              <span class="sample-label">Examples:</span>
+              <button class="sample-chip" data-q="Explain supervised learning">Explain supervised learning</button>
+              <button class="sample-chip" data-q="What is primary key">What is primary key</button>
+              <button class="sample-chip" data-q="Explain Decision Tree">Explain Decision Tree</button>
+              <button class="sample-chip" data-q="What is the OSI model">What is the OSI model</button>
+            </div>
+          </div>
+
+          <!-- Answer Result View -->
+          <div class="short-answer-result-card hidden" id="short-answer-result">
+            <div class="result-header">
+              <h2 id="sa-result-title">Answer</h2>
+              <div class="result-actions">
+                <button class="btn btn-sm btn-outline" id="sa-copy-btn">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span>Copy</span>
+                </button>
+                <button class="btn btn-sm btn-secondary" id="sa-ask-another-btn">New Query</button>
+                <button class="btn btn-sm btn-primary" id="sa-quiz-btn">Test via Quiz</button>
+              </div>
+            </div>
+
+            <div class="sa-section">
+              <div class="sa-answer-text" id="sa-main-answer"></div>
+            </div>
+
+            <div class="sa-section">
+              <h3>Examples</h3>
+              <ul class="feature-bullets" id="sa-examples-list"></ul>
+            </div>
+
+            <div class="sa-section">
+              <h3>Applications</h3>
+              <ul class="feature-bullets" id="sa-applications-list"></ul>
+            </div>
+
+            <div class="sa-section exam-takeaway">
+              <h3>Key Exam Takeaway</h3>
+              <p id="sa-exam-point"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- 6. QUIZ SECTION -->
+      <!-- =================================================================== -->
+      <section id="section-quiz" class="content-section">
+        <!-- 6A: Quiz Setup View -->
+        <div class="quiz-setup-card" id="quiz-setup-view">
+          <div class="quiz-setup-header">
+            <div class="quiz-icon-mark">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <h1>Interactive Evaluation</h1>
+            <p class="section-subtitle">Assess conceptual understanding across vetted academic questions</p>
+          </div>
+
+          <div class="quiz-options-form">
+            <div class="form-group">
+              <label for="quiz-subject-select">Subject Area:</label>
+              <select id="quiz-subject-select" class="form-control">
+                <option value="all">All Subjects (Comprehensive Assessment)</option>
+                <option value="Python">Python</option>
+                <option value="Machine Learning">Machine Learning</option>
+                <option value="Artificial Intelligence">Artificial Intelligence</option>
+                <option value="DBMS">DBMS</option>
+                <option value="Data Science">Data Science</option>
+                <option value="Computer Networks">Computer Networks</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="quiz-difficulty-select">Difficulty Level:</label>
+              <select id="quiz-difficulty-select" class="form-control">
+                <option value="all">All Difficulties</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Number of Questions:</label>
+              <div class="question-count-pills">
+                <button type="button" class="count-pill" data-count="5">5</button>
+                <button type="button" class="count-pill active" data-count="10">10</button>
+                <button type="button" class="count-pill" data-count="15">15</button>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-block" id="btn-start-quiz">Begin Evaluation</button>
+          </div>
+        </div>
+
+        <!-- 6B: Active Quiz View -->
+        <div class="quiz-active-card hidden" id="quiz-active-view">
+          <!-- Quiz Status Bar -->
+          <div class="quiz-status-bar">
+            <div class="status-left">
+              <span class="question-counter" id="active-question-counter">Question 1 of 10</span>
+              <span class="difficulty-tag" id="active-difficulty-tag">Medium</span>
+            </div>
+            <div class="status-center">
+              <span class="timer-display" id="quiz-timer">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                00:00
+              </span>
+            </div>
+            <div class="status-right">
+              <span class="subject-tag" id="active-subject-tag">Machine Learning</span>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="quiz-progress-bar-container">
+            <div class="quiz-progress-fill" id="quiz-progress-fill" style="width: 10%;"></div>
+          </div>
+
+          <!-- Question Content -->
+          <div class="quiz-question-box">
+            <h3 class="question-text" id="active-question-text">Question text goes here?</h3>
+            
+            <!-- Options A, B, C, D -->
+            <div class="options-container" id="active-options-container">
+              <!-- Dynamically populated options -->
+            </div>
+          </div>
+
+          <!-- Navigation Controls -->
+          <div class="quiz-nav-footer">
+            <button class="btn btn-outline" id="quiz-btn-prev" disabled>Previous</button>
+            <div class="quiz-nav-center">
+              <span id="quiz-answered-indicator">Not answered yet</span>
+            </div>
+            <button class="btn btn-primary" id="quiz-btn-next">Next</button>
+            <button class="btn btn-success hidden" id="quiz-btn-submit">Submit Quiz</button>
+          </div>
+        </div>
+
+        <!-- 6C: Quiz Result View -->
+        <div class="quiz-result-card hidden" id="quiz-result-view">
+          <div class="result-celebration">
+            <div class="result-icon-mark">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <h1>Evaluation Complete</h1>
+            <div class="performance-tier-badge" id="result-tier-badge">Distinction (90-100%)</div>
+          </div>
+
+          <!-- Score Card Grid -->
+          <div class="score-summary-grid">
+            <div class="score-card">
+              <span class="sc-label">SCORE</span>
+              <span class="sc-value" id="result-score-text">8 / 10</span>
+            </div>
+            <div class="score-card">
+              <span class="sc-label">PERCENTAGE</span>
+              <span class="sc-value" id="result-percent-text">80%</span>
+            </div>
+            <div class="score-card positive">
+              <span class="sc-label">CORRECT</span>
+              <span class="sc-value" id="result-correct-count">8</span>
+            </div>
+            <div class="score-card negative">
+              <span class="sc-label">INCORRECT</span>
+              <span class="sc-value" id="result-incorrect-count">2</span>
+            </div>
+          </div>
+
+          <!-- Topics Analysis -->
+          <div class="result-analysis-section">
+            <div class="analysis-box">
+              <h3>Strong Performance</h3>
+              <div class="topic-tags-row" id="result-strong-areas">
+                <!-- Tags populated dynamically -->
+              </div>
+            </div>
+            <div class="analysis-box warning-box">
+              <h3>Recommended Focus</h3>
+              <div class="topic-tags-row" id="result-weak-areas">
+                <!-- Tags populated dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="result-actions-row">
+            <button class="btn btn-secondary" id="btn-review-answers">Review Answers</button>
+            <button class="btn btn-outline" id="btn-result-revision">Quick Revision</button>
+            <button class="btn btn-primary" id="btn-result-retry">Retake Assessment</button>
+            <button class="btn btn-ghost" id="btn-result-dashboard">Return to Dashboard</button>
+          </div>
+
+          <!-- Question Review Accordion / List (Hidden initially) -->
+          <div class="quiz-review-container hidden" id="quiz-review-section">
+            <div class="review-header">
+              <h2>Question Analysis</h2>
+              <button class="btn btn-sm btn-outline" id="btn-close-review">Hide Review</button>
+            </div>
+            <div class="review-items-list" id="review-items-list">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- 7. PROGRESS SECTION -->
+      <!-- =================================================================== -->
+      <section id="section-progress" class="content-section">
+        <div class="progress-page-header">
+          <h1>Progress & Performance</h1>
+          <p class="section-subtitle">Aggregate academic metrics, discipline completion, and history</p>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">TOPICS STUDIED</span>
+              <span class="stat-icon-subtle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </span>
+            </div>
+            <div class="stat-details">
+              <span class="stat-value" id="prog-topics-count">0</span>
+              <span class="stat-subtext">Total topics accessed</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">QUIZZES COMPLETED</span>
+              <span class="stat-icon-subtle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </span>
+            </div>
+            <div class="stat-details">
+              <span class="stat-value" id="prog-quizzes-count">0</span>
+              <span class="stat-subtext">Evaluations submitted</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">QUESTIONS ANSWERED</span>
+              <span class="stat-icon-subtle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </span>
+            </div>
+            <div class="stat-details">
+              <span class="stat-value" id="prog-questions-count">0</span>
+              <span class="stat-subtext">Total MCQs answered</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">AVERAGE ACCURACY</span>
+              <span class="stat-icon-subtle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </span>
+            </div>
+            <div class="stat-details">
+              <span class="stat-value" id="prog-avg-score">0%</span>
+              <span class="stat-subtext">Overall success rate</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subject Mastery Progress Bars -->
+        <div class="progress-card">
+          <h2>Discipline Mastery & Completion</h2>
+          <div class="subject-progress-bars" id="subject-progress-bars">
+            <!-- Populated via script.js -->
+          </div>
+        </div>
+
+        <!-- Personalized Recommendations -->
+        <div class="progress-card">
+          <h2>Targeted Knowledge Areas</h2>
+          <p class="section-subtitle">Generated automatically based on incorrect quiz answers</p>
+          <div class="recommendations-container" id="progress-recommendations-list">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Recent Quiz History -->
+        <div class="progress-card">
+          <h2>Recent Evaluation History</h2>
+          <div class="table-responsive">
+            <table class="quiz-history-table">
+              <thead>
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Subject</th>
+                  <th>Score</th>
+                  <th>Percentage</th>
+                  <th>Classification</th>
+                </tr>
+              </thead>
+              <tbody id="quiz-history-tbody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- 8. SETTINGS SECTION -->
+      <!-- =================================================================== -->
+      <section id="section-settings" class="content-section">
+        <div class="settings-header">
+          <h1>Settings</h1>
+          <p class="section-subtitle">Workspace appearance, defaults, and local data persistence</p>
+        </div>
+
+        <div class="settings-grid">
+          <!-- Appearance Card -->
+          <div class="settings-card">
+            <h3>Appearance</h3>
+            <p class="setting-desc">Switch between light and dark theme palettes</p>
+            <div class="theme-choice-row">
+              <button class="theme-choice-btn" id="btn-theme-light" data-set-theme="light">
+                <span class="theme-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </span>
+                <span>Light Mode</span>
+              </button>
+              <button class="theme-choice-btn" id="btn-theme-dark" data-set-theme="dark">
+                <span class="theme-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </span>
+                <span>Dark Mode</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Study Preferences Card -->
+          <div class="settings-card">
+            <h3>Study Preferences</h3>
+            <div class="setting-form-group">
+              <label for="pref-default-subject">Default Subject:</label>
+              <select id="pref-default-subject" class="form-control">
+                <option value="python">Python</option>
+                <option value="machine_learning">Machine Learning</option>
+                <option value="artificial_intelligence">Artificial Intelligence</option>
+                <option value="dbms">DBMS</option>
+                <option value="data_science">Data Science</option>
+                <option value="computer_networks">Computer Networks</option>
+              </select>
+            </div>
+            <div class="setting-form-group">
+              <label for="pref-default-difficulty">Default Difficulty:</label>
+              <select id="pref-default-difficulty" class="form-control">
+                <option value="all">All Difficulties</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Data Management Card -->
+          <div class="settings-card danger-zone">
+            <h3>Data Management</h3>
+            <p class="setting-desc">Local browser cache and persistent storage records</p>
+            <div class="data-actions-list">
+              <div class="data-action-item">
+                <div>
+                  <strong>Clear Chat History</strong>
+                  <p>Removes stored assistant conversation logs.</p>
+                </div>
+                <button class="btn btn-outline btn-sm" id="btn-clear-chat-history">Clear Chat</button>
+              </div>
+              <div class="data-action-item">
+                <div>
+                  <strong>Clear Evaluation Records</strong>
+                  <p>Removes past quiz submissions and scores.</p>
+                </div>
+                <button class="btn btn-outline btn-sm" id="btn-clear-quiz-history">Clear History</button>
+              </div>
+              <div class="data-action-item">
+                <div>
+                  <strong>Reset Progress & Streak</strong>
+                  <p>Resets topic completion counters and streak.</p>
+                </div>
+                <button class="btn btn-outline btn-sm" id="btn-reset-progress">Reset Progress</button>
+              </div>
+              <div class="data-action-item">
+                <div>
+                  <strong class="text-danger">Reset All Local Data</strong>
+                  <p>Restores application to initial clean defaults.</p>
+                </div>
+                <button class="btn btn-danger btn-sm" id="btn-clear-all-data">Factory Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- FOOTER -->
+      <!-- =================================================================== -->
+      <footer class="app-footer">
+        <div class="footer-content">
+          <p class="footer-title">AI Study Assistant — Engineering Academic Edition</p>
+          <p class="footer-tagline">Pure Vanilla Python, HTML, CSS, and JavaScript.</p>
+          <p class="footer-copy">&copy; 2026 AI Study Assistant • Academic rights reserved.</p>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Toast Notification Element -->
+  <div id="toast" class="toast-notification"></div>
+
+  <!-- Modal Confirmation Dialog -->
+  <div id="confirm-modal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <h3 id="modal-title">Confirm Action</h3>
+      <p id="modal-message">Are you sure you want to proceed?</p>
+      <div class="modal-actions">
+        <button class="btn btn-outline" id="modal-btn-cancel">Cancel</button>
+        <button class="btn btn-danger" id="modal-btn-confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Data and Main Engine Scripts -->
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
